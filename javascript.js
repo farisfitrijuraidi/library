@@ -1,5 +1,13 @@
+// --- 1. SELECT DOM ELEMENTS ---
 const container = document.querySelector('.container');
+const dialog = document.getElementById('dialog');
+const showDialog = document.getElementById('showDialog');
+const confirmBtn = dialog.querySelector('#confirmBtn');
+const title = dialog.querySelector('#title');
+const author = dialog.querySelector('#author');
+const year = dialog.querySelector('#year');
 
+// --- 2. DEFINE FUNCTIONS ---
 const myLibrary = [];
 
 function Book(title, author, year, isRead) {
@@ -30,12 +38,25 @@ function displayBook (array) {
         year.textContent = element.year;
         div.appendChild(year);
         const readStatus = document.createElement('p');
-        readStatus.textContent = element.readStatus;
+        readStatus.textContent = element.isRead;
         div.appendChild(readStatus);
     });
 }
 
-addBookToLibrary('The Hobbit', 'Tolkien', 1937, false);
-addBookToLibrary('1984', 'George Orwell',1949, false);
-addBookToLibrary('To Kill A Mockingbird', 'Harper Lee', 1960, true);
-displayBook(myLibrary);
+function insertBook (event) {
+    event.preventDefault();
+    const bookTitle = title.value;
+    const bookAuthor = author.value;
+    const bookYear = year.value;
+    const haveRead = dialog.querySelector('input[name="isRead"]:checked').value;
+    addBookToLibrary(bookTitle, bookAuthor, bookYear, haveRead);
+    displayBook(myLibrary);
+    dialog.close();
+}
+
+// --- 3. ADD EVENT LISTENERS ---
+showDialog.addEventListener('click', () => {
+    dialog.showModal();
+})
+
+confirmBtn.addEventListener('click', insertBook);
