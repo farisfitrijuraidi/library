@@ -1,14 +1,16 @@
 // --- 1. SELECT DOM ELEMENTS ---
 const container = document.querySelector('.container');
 const dialog = document.getElementById('dialog');
+const form = dialog.querySelector('form');
 const showDialog = document.getElementById('showDialog');
 const confirmBtn = dialog.querySelector('#confirmBtn');
+const cancelBtn = dialog.querySelector('#cancelBtn');
 const title = dialog.querySelector('#title');
 const author = dialog.querySelector('#author');
 const year = dialog.querySelector('#year');
 
 // --- 2. DEFINE FUNCTIONS ---
-const myLibrary = [];
+let myLibrary = [];
 
 function Book(title, author, year, isRead) {
     this.id = crypto.randomUUID();
@@ -16,6 +18,10 @@ function Book(title, author, year, isRead) {
     this.author = author;
     this.year = year;
     this.isRead = isRead;
+}
+
+Book.prototype.toggleReadStatus = function () {
+    this.isRead = !this.isRead; 
 }
 
 function addBookToLibrary (title, author, year, isRead) {
@@ -26,20 +32,58 @@ function addBookToLibrary (title, author, year, isRead) {
 function displayBook (array) {
     container.innerHTML = '';
     array.forEach(element => {
+        // Card container
         const div = document.createElement('div');
+        div.classList.add('card-container');
         container.appendChild(div);
+
+        // Title container
         const title = document.createElement('p');
-        title.textContent = element.title;
+        title.textContent = 'Title : ' + element.title;
+        title.classList.add('title');
         div.appendChild(title);
+
+        // Author container
         const author = document.createElement('p');
-        author.textContent = element.author;
+        author.textContent = 'Author : ' + element.author;
+        author.classList.add('author');
         div.appendChild(author);
+
+        // Year container
         const year = document.createElement('p');
-        year.textContent = element.year;
+        year.textContent = 'Year : ' + element.year;
+        year.classList.add('year');
         div.appendChild(year);
+
+        // ReadStatus container
         const readStatus = document.createElement('p');
-        readStatus.textContent = element.isRead;
+        readStatus.textContent = 'Have Read? : ' + (element.isRead ? 'Yes' : 'No');
+        readStatus.classList.add('readStatus');
         div.appendChild(readStatus);
+
+        // Remove button
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remove';
+        removeBtn.classList.add('removeButton');
+        removeBtn.dataset.bookId = element.id; //Assign book ID to button
+        removeBtn.addEventListener('click', (e) => {
+            e.target.closest('.card-container').remove();
+            const idToDelete = e.target.dataset.bookId;
+            myLibrary = myLibrary.filter(obj => obj.id !== idToDelete);
+        })
+        div.appendChild(removeBtn);
+
+        // Toggle button
+        const toggleBtn = document.createElement('button');
+        toggleBtn.textContent = 'Toggle Read';
+        toggleBtn.classList.add('toggleButton');
+        toggleBtn.dataset.bookId = element.id;
+        toggleBtn.addEventListener('click', () => {
+            const foundBook = myLibrary.find(item => item.id === element.id);
+            foundBook.toggleReadStatus();
+            displayBook(myLibrary);
+        })
+        div.appendChild(toggleBtn);
     });
 }
 
@@ -48,7 +92,8 @@ function insertBook (event) {
     const bookTitle = title.value;
     const bookAuthor = author.value;
     const bookYear = year.value;
-    const haveRead = dialog.querySelector('input[name="isRead"]:checked').value;
+    let haveRead = dialog.querySelector('input[name="isRead"]:checked').value;
+    haveRead === 'Yes' ? haveRead = true : haveRead = false;
     addBookToLibrary(bookTitle, bookAuthor, bookYear, haveRead);
     displayBook(myLibrary);
     dialog.close();
@@ -59,4 +104,7 @@ showDialog.addEventListener('click', () => {
     dialog.showModal();
 })
 
-confirmBtn.addEventListener('click', insertBook);
+form.addEventListener('submit', insertBook);
+cancelBtn.addEventListener('click', () => {
+    dialog.close();
+})

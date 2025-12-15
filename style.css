@@ -1,4 +1,157 @@
+:root {
+    --bg-color: #E3E8F1; 
+    --standard-radius: 8px;
+    --shadow-soft: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    --small-gap: 8px;
+    --standard-font: 'Roboto';
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('./Roboto_woff/Roboto-Regular.woff2') format('woff2'),
+        url('./Roboto_woff/Roboto-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0 24px;
+}
+
+.button-top {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 300px);
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.card-container {
+    border-radius: var(--standard-radius);
+    background-color: var(--bg-color);
+    box-shadow: var(--shadow-soft);
+    padding: 24px 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--small-gap);
+    align-items: center;
+}
+
+h1 {
+   font-family: var(--standard-font); 
+   text-align: center;
+}
+
+.card-container p {
+    margin: 0;
+    font-family: var(--standard-font);
+}
+
+.removeButton {
+    width: 100px;
+}
+
+.toggleButton {
+    width: 120px;
+}
+
+dialog {
+    border-radius: var(--standard-radius);
+    box-shadow: var(--shadow-soft);
+}
+
 dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.5); /* Dim the background */
     backdrop-filter: blur(5px);            /* Blur the background */
 }
+
+label,
+input {
+    font-family: var(--standard-font);
+}
+
+input {
+    margin-top: 0px;
+}
+
+form {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr auto auto;
+    gap: var(--small-gap);
+}
+
+legend {
+    font-family: var(--standard-font);
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 24px;
+}
+
+li {
+    display: flex;
+    align-items: center;
+}
+
+li label {
+    width: 32px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    height: 32px;
+    padding: 5px 10px;
+    border-radius: var(--standard-radius);
+    background-color: var(--bg-color);
+    border: none;
+    font-family: var(--standard-font);
+}
+
+.cancel-confirm {
+    display: flex;
+    gap: var(--small-gap);
+}
+
+button {
+    border-radius: 1rem;
+    border: none;
+    background-color: #1992D4;
+    color: #fdfdff;
+    padding: 8px 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow:
+        inset 2px 2px 3px rgb(255 255 255 / 0.6),
+        inset -2px -2px 3px rgb(0 0 0 / 0.6);
+}
+
+button:hover {
+    filter: brightness(1.1);
+}
+
+button:active {
+    transform: translateY(2px);
+    filter: brightness(0.9);
+    box-shadow:
+        inset -2px -2px 3px rgb(255 255 255 / 0.6),
+        inset 2px 2px 3px rgb(0 0 0 / 0.6);
+}
+
